@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>UniEnt</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css" /> -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+  <link rel="stylesheet" href="./styles/styles.css" />
+</head>
+
+<body>
+  <!-- Navigation Bar -->
+  <nav class="site-header sticky-top py-1">
+    <div class="container d-flex flex-column flex-md-row justify-content-between">
+      <a class="py-2" href="#guestHome#userHome">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor"
+          stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="d-block mx-auto" role="img"
+          viewBox="0 0 24 24" focusable="false">
+          <title>UniEnt Home</title>
+          <circle cx="12" cy="12" r="10"></circle>
+          <path
+            d="M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16L3.95 6.06M14.31 16H2.83m13.79-4l-5.74 9.94">
+          </path>
+        </svg>
+      </a>
+      <a id="navOrganize" class="py-2 d-none d-md-inline-block" href="#organize">Organize Event</a>
+      <a id="navProfile" class="py-2 d-none d-md-inline-block" href="#profile">USERNAME</a>
+      <a id="navLogout" class="py-2 d-none d-md-inline-block" href="#logout">Logout</a>
+      <a id="navLogin" class="py-2 d-none d-md-inline-block" href="#login">Login</a>
+    </div>
+  </nav>
+
+  <!-- Notifications -->
+  <div id="notifications" class="sticky-top">
+    <div id="successBox" class="alert alert-success" role="alert">Success Message...</div>
+    <div id="loadingBox" class="alert alert-info" role="alert">Loading...</div>
+    <div id="errorBox" class="alert alert-danger" role="alert">{Error Message...}</div>
+  </div>
+
+  <!-- place template that matches route for site -->
+  <div id="container"></div>
+
+  <!-- Homepage (Guest) -->
+  <script id="guestHome-template" type="text/x-handlebars-template">
+    <div class="d-md-flex flex-md-equal w-100 my-md-3 pl-md-3">
+      <div style=" padding-left: 7%; padding-top:3%;" class="col-md-7">
+        <h2 class="featurette-heading">The events that <span class="text-muted">will blow your mind!</span></h2>
+        <p class="lead">Join our community.</p>
+        <p style="padding-left:5%" class="lead">Organizie an event.</p>
+        <p style="padding-left:10%" class="lead">Gathered as many people as possible for one purpose.</p>
+        <p style="padding-left:15%" class="lead">Learn!</p>
+        <p style="padding-left:20%" class="lead">Share!</p>
+        <p style="padding-left:25%" class="lead">Enjoy the life!</p>
+      </div>
+      <div class="col-md-5">
+        <img class="home-event-picture" src="./images/events.png" />
+      </div>
+    </div>
+  </script>
+
+  <!-- Register User -->
+  <script id="register-template" type="text/x-handlebars-template">
+    <form action="#" method="post">
+
+      <div class="text-center mb-4">
+        <h1 class="h3 mb-3 font-weight-normal">Sign-Up</h1>
+        <p>Register yourself once and create/join awesome events!</p>
+      </div>
+
+      <div class="form-label-group">
+        <input type="text" id="inputUsername" name="username" class="form-control" placeholder="Username" required=""
+          autofocus="">
+        <label for="inputUsername">Username</label>
+      </div>
+
+      <div class="form-label-group">
+        <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required="">
+        <label for="inputPassword">Password</label>
+      </div>
+
+      <div class="form-label-group">
+        <input type="password" id="inputRePassword" name="rePassword" class="form-control" placeholder="Re-Password"
+          required="">
+        <label for="inputRePassword">Re-Password</label>
+      </div>
+
+      <button id="submit" class="btn btn-lg btn-dark btn-block" type="submit">Sign Up</button>
+
+      <div class="text-center mb-4">
+        <p class="alreadyUser"> Already have account? Then just
+          <a href="#login">Sign-In</a>!
+        </p>
+      </div>
+
+    </form>
+  </script>
+
+  <!-- Login User -->
+  <script id="login-template" type="text/x-handlebars-template">
+    <form action="#" method="post">
+
+      <div class="text-center mb-4">
+        <h1 class="h3 mb-3 font-weight-normal">Sign-In</h1>
+        <p>You are on one step of awesome events!</p>
+      </div>
+
+      <div class="form-label-group">
+        <input type="text" id="inputUsername" name="username" class="form-control" placeholder="Username" required=""
+          autofocus="">
+        <label for="inputUsername">Username</label>
+      </div>
+
+      <div class="form-label-group">
+        <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required="">
+        <label for="inputPassword">Password</label>
+      </div>
+
+      <button id="submit" class="btn btn-lg btn-dark btn-block" type="submit">Sign In</button>
+
+      <div class="text-center mb-4">
+        <p class="alreadyUser"> Don't have account? Then just
+          <a href="#register">Sign-Up</a>!
+        </p>
+      </div>
+
+    </form>
+  </script>
+
+  <!-- Homepage (logged in users) -->
+  <script id="userHome-template" type="text/x-handlebars-template">
+    <div id="eventsHolder">
+      {{#each events}}
+      <div class="bg-light mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden eventPlaceholder">
+        <div class="my-3 p-3">
+          <h2 class="display-5">{{name}}</h2>
+        </div>
+        <div>
+          <div class="img"><img class="eventPicture"
+              src="{{imageURL}}" />
+          </div>
+          <a href="#details/{{id}}" class="eventDetails">More</a>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+  </script>
+
+  <!-- Organize event -->
+  <script id="organize-template" type="text/x-handlebars-template">
+    <form action="#userHome" method="post">
+      <div class="text-center mb-4">
+        <h1 class="h3 mb-3 font-weight-normal">Organize Event</h1>
+        <p>Fill up the following information!</p>
+      </div>
+
+      <div class="form-label-group">
+        <input type="text" id="inputEventName" name="name" class="form-control" placeholder="Event" required=""
+          autofocus="">
+        <label for="inputEventName">Event</label>
+      </div>
+
+      <div class="form-label-group">
+        <input type="text" id="inputEventDate" name="dateTime" class="form-control" placeholder="Date" required="">
+        <label for="inputEventDate">Date (DD MMM)</label>
+      </div>
+
+      <div class="form-label-group">
+        <textarea type="text" id="inputEventDescription" name="description" class="form-control" placeholder="Description"
+          required=""></textarea>
+        <label for="inputEventDescription">Description</label>
+      </div>
+
+      <div class="form-label-group">
+        <input type="text" id="inputEventImage" name="imageURL" class="form-control" placeholder="Image" required=""
+          autofocus="">
+        <label for="inputEventImage">Image</label>
+      </div>
+
+      <button id="submit" class="btn btn-lg btn-dark btn-block" type="submit">Organize it</button>
+
+    </form>
+  </script>
+
+  <!-- Details event -->
+  <script id="details-template" type="text/x-handlebars-template">
+    <div class="row event-details">
+      <div class="col-md-12 text-center overflow-hidden">
+
+        <img class="details-img"
+          src="{{imageURL}}" />
+        <div class="my-3 p-3">
+          <h2 class="display-5">{{name}}</h2>
+          <p class="infoType">Description:</p>
+          <p class="event-description">{{description}}</p>
+          <p class="infoType">Date: <small>{{dateTime}}</small></p>
+          <p class="infoType">People interested in: <small>{{interested}}</small></p>
+          <p class="infoType">Organizer: <small>{{organizerUsername}}</small></p>
+        </div>
+        <a id="editBtn" href="#edit/{{id}}" class="btn btn-primary btn-lg">Edit the event</a>
+        <a id="closeBtn" href="#close/{{id}}" class="btn btn-danger btn-lg">Close the event</a>
+        <a id="joinBtn" href="#join/{{id}}/{{interested}}" class="btn btn-info btn-lg">Join the event</a>
+        <!-- <a href="#join/{{id}}" class="btn btn-warning btn-lg">Leave the event</a> -->
+      </div>
+    </div>
+  </script>
+
+  <!-- Edit event -->
+  <script id="edit-template" type="text/x-handlebars-template">
+    <form action="#" method="post">
+
+      <div class="text-center mb-4">
+        <h1 class="h3 mb-3 font-weight-normal">Edit Event</h1>
+      </div>
+
+      <div class="form-label-group">
+        <input type="text" id="inputEventName" name="name" class="form-control" placeholder="Event" required=""
+          autofocus="" value="{{name}}">
+        <label for="inputEventName">Event</label>
+      </div>
+
+      <div class="form-label-group">
+        <input type="text" id="inputEventDate" name="dateTime" class="form-control" placeholder="Date" required=""
+          value="{{dateTime}}">
+        <label for="inputEventDate">Date</label>
+      </div>
+
+      <div class="form-label-group">
+        <textarea type="text" id="inputEventDescription" name="description" class="form-control" placeholder="Description"
+          required="">{{description}}</textarea>
+        <label for="inputEventDescription">Description</label>
+      </div>
+      <div class="form-label-group">
+        <input type="text" id="inputEventImage" name="imageURL" class="form-control" placeholder="Image" required=""
+          autofocus="" value="{{imageURL}}">
+        <label for="inputEventImage">Image</label>
+      </div>
+      <div style="display: none">
+        <input name="organizer" value="" />
+        <input name="peopleInterestedIn" value="" />
+      </div>
+
+      <button id="submit" class="btn btn-lg btn-dark btn-block" type="submit">Edit it</button>
+
+    </form>  
+  </script>
+
+  <!-- User Profile -->
+  <script id="profile-template" type="text/x-handlebars-template">
+    <div class="col-md-6 text-center col-lg">
+      <img class="profile-img" src="./images/user.png" />
+      <div class="profile-info">
+        <p>Username: <small id="profileUsername"></small></p>
+        <p id="organizerOf" class="infoType">Organizer of {{events.length}} event(s).</p>
+        {{#each events}}
+        <p>{{name}}</p>
+        {{/each}}
+        <!-- <p>No events</p> -->
+      </div>
+    </div>
+  </script>
+
+  <!-- oops page -->
+  <script id="oops-template" type="text/x-handlebars-template">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div id="fouronefour">
+            <img class="no-found-picture" src="./images/404face.png" />
+          </div>
+          <div class="error-template">
+            <h1>
+              Oops!</h1>
+            <h2>
+              404 Not Found</h2>
+            <div class="error-details">
+              UniEnt cannot find any event...
+            </div>
+            <div class="actions">
+              <a href="#organize" class="btn btn-dark btn-lg">Create the first one? </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>  
+  </script>
+
+  <!-- Footer -->
+  <footer class="container py-5">
+    <div class="row text-center">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor"
+        stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="d-block mb-2" role="i  mg"
+        viewBox="0 0 24 24" focusable="false">
+        <title>Product</title>
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16L3.95 6.06M14.31 16H2.83m13.79-4l-5.74 9.94">
+        </path>
+      </svg>
+      <p class="d-block mb-3 text-muted">© UniEnt - 2021</p>
+    </div>
+  </footer>
+
+
+  <!-- <script src="./node_modules/handlebars/dist/handlebars.min.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+  <!-- <script id="template" type="text/x-handlebars-template"> -->
+
+  <!-- notifications -->
+  <script>
+    function notify(message, type) {
+      document.getElementById("loadingBox").classList.remove("active");
+      let notifyDiv = document.getElementById(type);
+      notifyDiv.innerHTML = message;
+      notifyDiv.classList.add("active");
+      notifyDiv.addEventListener("click", function (event) {
+        notifyDiv.classList.remove("active");
+      });
+      if (type == "successBox") {
+        document.getElementById("errorBox").classList.remove("active");
+        setTimeout(() => {
+          notifyDiv.classList.remove("active");
+        }, 5000);
+      }
+    }
+  </script>
+
+  <!-- handlebars renderings -->
+  <script src="./scripts/routes.js"></script>
+  <!-- baby server -->
+  <script src="./scripts/babyServer.js"></script>
+</body>
+
+<!-- Libraries -->
+<!-- <script src="./node_modules/jquery/dist/jquery.js"></script> -->
+<!-- <script src="./node_modules/bootstrap/dist/js/bootstrap.js"></script> -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2" crossorigin="anonymous"></script>
+
+</html>
